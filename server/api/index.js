@@ -2,9 +2,17 @@ import dotenv from 'dotenv';
 import express from 'express';
 import mongoose from 'mongoose';
 import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import authRoutes from '../routes/authRoutes.js';
+import studentRoutes from '../routes/studentRoutes.js';
+import departmentRoutes from '../routes/departmentRoutes.js';
+import sectionRoutes from '../routes/sectionRoutes.js';
+import dashboardRoutes from '../routes/dashboardRoutes.js';
+import reportRoutes from '../routes/reportRoutes.js';
+import { errorHandler, notFoundHandler } from '../middleware/errorHandler.js';
 
 dotenv.config();
 
@@ -14,7 +22,14 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// CORS configuration for cookies
+app.use(cors({
+    origin: process.env.CLIENT_URL || 'http://localhost:5173', // Vite default port
+    credentials: true
+}));
+
 // Middleware
+app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
@@ -25,6 +40,11 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/auth_db')
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/students', studentRoutes);
+app.use('/api/departments', departmentRoutes);
+app.use('/api/sections', sectionRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/reports', reportRoutes);
 
 // Dummy data to store users
 let users = [
@@ -133,6 +153,10 @@ app.get('/allUsers', (req, res) => {
 		res.status(500).send('Error retrieving users');
 	}
 });
+
+// Error handling middleware (must be after all routes)
+app.use(notFoundHandler);
+app.use(errorHandler);
 
 // Start server
 const PORT = process.env.PORT || 3000;

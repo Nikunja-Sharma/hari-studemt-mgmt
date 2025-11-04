@@ -2,15 +2,15 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 const userSchema = new mongoose.Schema({
-    name: {
+    username: {
         type: String,
-        required: [true, 'Name is required'],
-        trim: true
+        required: [true, 'Username is required'],
+        trim: true,
+        minlength: [3, 'Username must be at least 3 characters long']
     },
     email: {
         type: String,
         required: [true, 'Email is required'],
-        unique: true,
         trim: true,
         lowercase: true,
         match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please enter a valid email']
@@ -18,13 +18,23 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: [true, 'Password is required'],
-        minlength: [6, 'Password must be at least 6 characters long']
+        minlength: [8, 'Password must be at least 8 characters long']
+    },
+    role: {
+        type: String,
+        enum: ['Admin', 'Faculty'],
+        default: 'Faculty',
+        required: true
     }
 }, {
     timestamps: true
 });
 
-// Hash password before saving
+// Add unique indexes (removed 'unique: true' from schema to avoid duplicate index warning)
+userSchema.index({ username: 1 }, { unique: true });
+userSchema.index({ email: 1 }, { unique: true });
+
+// Hash password before saving using bcrypt
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
     
