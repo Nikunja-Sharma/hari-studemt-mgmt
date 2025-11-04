@@ -151,3 +151,55 @@ export const reportAPI = {
         });
     }
 };
+
+// Profile API
+export const profileAPI = {
+    getProfile: () => apiCall('/users/profile'),
+
+    updateProfile: (profileData) => apiCall('/users/profile', {
+        method: 'PUT',
+        body: JSON.stringify(profileData)
+    }),
+
+    getPreferences: () => apiCall('/users/profile/preferences'),
+
+    updatePreferences: (preferences) => apiCall('/users/profile/preferences', {
+        method: 'PUT',
+        body: JSON.stringify({ preferences })
+    }),
+
+    changePassword: (passwordData) => apiCall('/users/profile/change-password', {
+        method: 'POST',
+        body: JSON.stringify(passwordData)
+    }),
+
+    uploadAvatar: (profilePicture) => apiCall('/users/profile/upload-avatar', {
+        method: 'POST',
+        body: JSON.stringify({ profilePicture })
+    })
+};
+
+// Admin User Management API
+export const adminUserAPI = {
+    getAll: (params = {}) => {
+        const queryString = new URLSearchParams(params).toString();
+        return apiCall(`/admin/users${queryString ? `?${queryString}` : ''}`);
+    },
+
+    getById: (id) => apiCall(`/admin/users/${id}`),
+
+    getStats: () => apiCall('/admin/users/stats'),
+
+    banUser: (id, reason) => apiCall(`/admin/users/${id}/ban`, {
+        method: 'POST',
+        body: JSON.stringify({ reason })
+    }),
+
+    unbanUser: (id) => apiCall(`/admin/users/${id}/unban`, {
+        method: 'POST'
+    }),
+
+    deleteUser: (id) => apiCall(`/admin/users/${id}`, {
+        method: 'DELETE'
+    })
+};

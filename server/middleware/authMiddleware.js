@@ -42,6 +42,18 @@ export const verifyToken = async (req, res, next) => {
             });
         }
 
+        // Check if account is locked
+        if (user.isAccountLocked && user.isAccountLocked()) {
+            return res.status(403).json({
+                success: false,
+                error: {
+                    message: 'Account is locked due to multiple failed login attempts. Please try again later.',
+                    code: 'ACCOUNT_LOCKED',
+                    lockedUntil: user.security?.lockedUntil
+                }
+            });
+        }
+
         // Attach user to request object
         req.user = user;
         req.userId = decoded.userId;

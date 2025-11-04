@@ -107,6 +107,9 @@ const AppLayout = () => {
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
+                            <DropdownMenuItem onClick={() => navigate('/settings')}>
+                                Settings
+                            </DropdownMenuItem>
                             <DropdownMenuItem onClick={handleLogout}>
                                 Log out
                             </DropdownMenuItem>

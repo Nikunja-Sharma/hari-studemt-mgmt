@@ -232,9 +232,39 @@ export const login = async (req, res) => {
             });
         }
 
+        // Check if account is banned
+        if (user.isBanned) {
+            return res.status(403).json({ 
+                success: false,
+                error: {
+                    message: 'Your account has been banned. Please contact the administrator.',
+                    code: 'ACCOUNT_BANNED',
+                    banReason: user.banReason,
+                    bannedAt: user.bannedAt
+                }
+            });
+        }
+
+        // Check if account is locked
+        if (user.isAccountLocked && user.isAccountLocked()) {
+            return res.status(403).json({ 
+                success: false,
+                error: {
+                    message: 'Account is locked due to multiple failed login attempts. Please try again later.',
+                    code: 'ACCOUNT_LOCKED',
+                    lockedUntil: user.security?.lockedUntil
+                }
+            });
+        }
+
         // Verify password
         const isPasswordValid = await user.comparePassword(password);
         if (!isPasswordValid) {
+            // Increment failed login attempts
+            if (user.incrementFailedAttempts) {
+                await user.incrementFailedAttempts();
+            }
+            
             return res.status(401).json({ 
                 success: false,
                 error: {
@@ -242,6 +272,16 @@ export const login = async (req, res) => {
                     code: 'INVALID_CREDENTIALS'
                 }
             });
+        }
+
+        // Reset failed login attempts on successful login
+        if (user.resetFailedAttempts) {
+            await user.resetFailedAttempts();
+        }
+
+        // Update last login timestamp
+        if (user.updateLastLogin) {
+            await user.updateLastLogin();
         }
 
         // Generate JWT token with 24-hour expiration

@@ -1,6 +1,7 @@
 import Student from '../models/Student.js';
 import Department from '../models/Department.js';
 import Section from '../models/Section.js';
+import User from '../models/User.js';
 
 // Cache for statistics (simple in-memory cache)
 let statsCache = null;
@@ -21,10 +22,12 @@ export const getStats = async (req, res) => {
         }
 
         // Calculate statistics
-        const [totalStudents, totalDepartments, totalSections] = await Promise.all([
+        const [totalStudents, totalDepartments, totalSections, totalUsers, totalFaculty] = await Promise.all([
             Student.countDocuments(),
             Department.countDocuments(),
-            Section.countDocuments()
+            Section.countDocuments(),
+            User.countDocuments(),
+            User.countDocuments({ role: 'Faculty' })
         ]);
 
         // Get department-wise student distribution
@@ -107,7 +110,9 @@ export const getStats = async (req, res) => {
             overview: {
                 totalStudents,
                 totalDepartments,
-                totalSections
+                totalSections,
+                totalUsers,
+                totalFaculty
             },
             departmentDistribution,
             sectionDistribution

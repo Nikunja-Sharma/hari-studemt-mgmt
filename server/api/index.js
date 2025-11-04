@@ -15,6 +15,8 @@ import departmentRoutes from '../routes/departmentRoutes.js';
 import sectionRoutes from '../routes/sectionRoutes.js';
 import dashboardRoutes from '../routes/dashboardRoutes.js';
 import reportRoutes from '../routes/reportRoutes.js';
+import profileRoutes from '../routes/profileRoutes.js';
+import userRoutes from '../routes/userRoutes.js';
 import { errorHandler, notFoundHandler } from '../middleware/errorHandler.js';
 
 dotenv.config();
@@ -39,16 +41,16 @@ app.use(cors({
 }));
 
 // Rate limiting to prevent brute force attacks
-const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 100, // Limit each IP to 100 requests per windowMs
-    message: 'Too many requests from this IP, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
-});
+// const limiter = rateLimit({
+//     windowMs: 15 * 60 * 1000, // 15 minutes
+//     max: 100, // Limit each IP to 100 requests per windowMs
+//     message: 'Too many requests from this IP, please try again later.',
+//     standardHeaders: true,
+//     legacyHeaders: false,
+// });
 
 // Apply rate limiting to all routes
-app.use(limiter);
+// app.use(limiter);
 
 // Stricter rate limiting for authentication routes
 const authLimiter = rateLimit({
@@ -80,6 +82,8 @@ app.use('/api/departments', departmentRoutes);
 app.use('/api/sections', sectionRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/reports', reportRoutes);
+app.use('/api/users/profile', profileRoutes);
+app.use('/api/admin/users', userRoutes);
 
 // Dummy data to store users
 let users = [

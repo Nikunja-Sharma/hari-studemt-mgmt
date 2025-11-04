@@ -55,6 +55,13 @@ const AdminDashboard = () => {
             action: () => navigate('/students')
         },
         {
+            title: 'Total Faculty',
+            value: stats?.overview?.totalFaculty || 0,
+            icon: Users,
+            color: 'bg-indigo-500',
+            action: () => navigate('/users')
+        },
+        {
             title: 'Total Departments',
             value: stats?.overview?.totalDepartments || 0,
             icon: Building2,
@@ -84,7 +91,7 @@ const AdminDashboard = () => {
             </div>
 
             {/* Statistics Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {statCards.map((stat, index) => (
                     <Card 
                         key={index} 
@@ -167,7 +174,7 @@ const AdminDashboard = () => {
                             Add Department
                         </Button>
                         <Button 
-                            onClick={() => navigate('/settings')}
+                            onClick={() => navigate('/users')}
                             className="w-full"
                             variant="outline"
                         >

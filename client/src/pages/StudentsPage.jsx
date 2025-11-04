@@ -89,7 +89,7 @@ const StudentsPage = () => {
 
             const data = await studentAPI.getAll(params);
             setStudents(data.data || []);
-            setTotalPages(data.pagination?.totalPages || 1);
+            setTotalPages(data.pagination?.pages || 1);
         } catch (err) {
             setError(err.message || 'Failed to fetch students');
         } finally {
@@ -186,7 +186,7 @@ const StudentsPage = () => {
                         <div className="relative">
                             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
                             <Input
-                                placeholder="Search by name or roll number..."
+                                placeholder="Search by name, roll number, email, or contact..."
                                 value={searchQuery}
                                 onChange={handleSearchChange}
                                 className="pl-10"

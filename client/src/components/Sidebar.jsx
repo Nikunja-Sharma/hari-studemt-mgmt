@@ -43,10 +43,16 @@ const Sidebar = ({ isOpen, onClose }) => {
             show: true
         },
         {
+            title: 'Users',
+            href: '/users',
+            icon: Users,
+            show: isAdmin // Only show for admins
+        },
+        {
             title: 'Settings',
             href: '/settings',
             icon: Settings,
-            show: isAdmin // Only show for Admin users
+            show: true // Show for all users
         }
     ];
 

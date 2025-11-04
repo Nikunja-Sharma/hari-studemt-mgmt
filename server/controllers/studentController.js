@@ -5,13 +5,27 @@ import Section from '../models/Section.js';
 // Get all students with optional filtering by department and section
 export const getAllStudents = async (req, res) => {
     try {
-        const { department, section, page = 1, limit = 10 } = req.query;
+        const { department, section, search, page = 1, limit = 10 } = req.query;
         
         // Build query object
         const query = {};
+        
+        // Add search functionality across multiple fields
+        if (search && search.trim()) {
+            query.$or = [
+                { name: { $regex: search, $options: 'i' } },
+                { rollNumber: { $regex: search, $options: 'i' } },
+                { email: { $regex: search, $options: 'i' } },
+                { contact: { $regex: search, $options: 'i' } }
+            ];
+        }
+        
+        // Add department filter
         if (department) {
             query.department = department;
         }
+        
+        // Add section filter
         if (section) {
             query.section = section;
         }
@@ -416,7 +430,7 @@ export const deleteStudent = async (req, res) => {
     }
 };
 
-// Search students by name or roll number
+// Search students by name, roll number, email, or contact
 export const searchStudents = async (req, res) => {
     try {
         const { q, page = 1, limit = 10 } = req.query;
@@ -431,11 +445,13 @@ export const searchStudents = async (req, res) => {
             });
         }
 
-        // Build search query using regex for partial matching
+        // Build search query using regex for partial matching across multiple fields
         const searchQuery = {
             $or: [
                 { name: { $regex: q, $options: 'i' } },
-                { rollNumber: { $regex: q, $options: 'i' } }
+                { rollNumber: { $regex: q, $options: 'i' } },
+                { email: { $regex: q, $options: 'i' } },
+                { contact: { $regex: q, $options: 'i' } }
             ]
         };
 

@@ -5,6 +5,8 @@ import DashboardPage from './pages/DashboardPage';
 import StudentsPage from './pages/StudentsPage';
 import DepartmentsPage from './pages/DepartmentsPage';
 import ReportsPage from './pages/ReportsPage';
+import SettingsPage from './pages/SettingsPage';
+import UserManagementPage from './pages/UserManagementPage';
 import AppLayout from './components/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorBoundary from './components/ErrorBoundary';
@@ -34,8 +36,8 @@ function App() {
           <Route path="students" element={<StudentsPage />} />
           <Route path="departments" element={<DepartmentsPage />} />
           <Route path="reports" element={<ReportsPage />} />
-          {/* Placeholder routes for future pages */}
-          <Route path="settings" element={<div className="p-6"><h1 className="text-2xl font-bold">Settings Page - Coming Soon</h1></div>} />
+          <Route path="users" element={<UserManagementPage />} />
+          <Route path="settings" element={<SettingsPage />} />
         </Route>
 
         {/* 404 Not Found */}
