@@ -252,3 +252,73 @@ VITE_API_URL=http://localhost:3000/api
 - Use environment-specific configurations
 - Keep sensitive credentials secure
 
+
+## 🏃 Running the Application
+
+### Development Mode
+
+#### Option 1: Run Both Servers Separately
+
+**Terminal 1 - Backend:**
+```bash
+cd server
+npm run dev
+```
+Backend will run on `http://localhost:3000`
+
+**Terminal 2 - Frontend:**
+```bash
+cd client
+npm run dev
+```
+Frontend will run on `http://localhost:5173`
+
+#### Option 2: Using Concurrently (if configured)
+
+From the root directory:
+```bash
+npm run dev
+```
+
+### Production Mode
+
+**Build Frontend:**
+```bash
+cd client
+npm run build
+```
+
+**Start Backend:**
+```bash
+cd server
+npm start
+```
+
+### Initial Setup
+
+#### 1. Create Admin User
+
+```bash
+cd server
+node scripts/createAdmin.js
+```
+
+Default admin credentials:
+- **Username:** admin
+- **Password:** admin123
+
+⚠️ **Change the default password immediately after first login!**
+
+#### 2. Seed Test Data (Optional)
+
+```bash
+cd server
+node scripts/seedData.js
+```
+
+This will create:
+- 4 Departments (CS, EC, ME, CE)
+- 8 Sections (A & B for each department)
+- 80 Students (10 per section)
+- 1 Faculty user
+
