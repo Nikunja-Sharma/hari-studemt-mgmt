@@ -322,3 +322,82 @@ This will create:
 - 80 Students (10 per section)
 - 1 Faculty user
 
+
+## 📁 Project Structure
+
+```
+student-management-system/
+├── client/                      # Frontend React application
+│   ├── public/                  # Static files
+│   ├── src/
+│   │   ├── components/          # React components
+│   │   │   ├── ui/             # shadcn/ui components
+│   │   │   ├── students/       # Student-related components
+│   │   │   ├── departments/    # Department-related components
+│   │   │   ├── settings/       # Settings components
+│   │   │   ├── AppLayout.jsx   # Main layout component
+│   │   │   ├── Sidebar.jsx     # Navigation sidebar
+│   │   │   ├── ProtectedRoute.jsx
+│   │   │   └── ErrorBoundary.jsx
+│   │   ├── pages/              # Page components
+│   │   │   ├── LoginPage.jsx
+│   │   │   ├── SignupPage.jsx
+│   │   │   ├── DashboardPage.jsx
+│   │   │   ├── StudentsPage.jsx
+│   │   │   ├── DepartmentsPage.jsx
+│   │   │   ├── ReportsPage.jsx
+│   │   │   ├── SettingsPage.jsx
+│   │   │   └── UserManagementPage.jsx
+│   │   ├── lib/                # Utility functions
+│   │   │   ├── api.js          # API client
+│   │   │   └── utils.js        # Helper functions
+│   │   ├── App.jsx             # Main App component
+│   │   ├── main.jsx            # Entry point
+│   │   └── index.css           # Global styles
+│   ├── .env.example            # Environment variables template
+│   ├── package.json            # Dependencies
+│   ├── vite.config.js          # Vite configuration
+│   └── tailwind.config.js      # Tailwind configuration
+│
+├── server/                      # Backend Express application
+│   ├── api/
+│   │   └── index.js            # Main server file
+│   ├── controllers/            # Request handlers
+│   │   ├── authController.js
+│   │   ├── studentController.js
+│   │   ├── departmentController.js
+│   │   ├── sectionController.js
+│   │   ├── reportController.js
+│   │   ├── dashboardController.js
+│   │   ├── userController.js
+│   │   └── profileController.js
+│   ├── models/                 # Mongoose models
+│   │   ├── User.js
+│   │   ├── Student.js
+│   │   ├── Department.js
+│   │   └── Section.js
+│   ├── routes/                 # API routes
+│   │   ├── authRoutes.js
+│   │   ├── studentRoutes.js
+│   │   ├── departmentRoutes.js
+│   │   ├── sectionRoutes.js
+│   │   ├── reportRoutes.js
+│   │   ├── dashboardRoutes.js
+│   │   ├── userRoutes.js
+│   │   └── profileRoutes.js
+│   ├── middleware/             # Custom middleware
+│   │   ├── authMiddleware.js   # JWT verification
+│   │   └── errorHandler.js     # Error handling
+│   ├── scripts/                # Utility scripts
+│   │   ├── createAdmin.js      # Create admin user
+│   │   └── seedData.js         # Seed test data
+│   ├── .env.example            # Environment variables template
+│   └── package.json            # Dependencies
+│
+├── .gitignore                  # Git ignore rules
+├── README.md                   # This file
+├── QUICKSTART.md              # Quick start guide
+├── PROJECT_SUMMARY.md         # Project overview
+└── REPORTS_DOCUMENTATION.md   # Reports guide
+```
+
