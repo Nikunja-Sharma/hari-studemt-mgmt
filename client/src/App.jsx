@@ -7,12 +7,14 @@ import DepartmentsPage from './pages/DepartmentsPage';
 import ReportsPage from './pages/ReportsPage';
 import AppLayout from './components/AppLayout';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorBoundary from './components/ErrorBoundary';
 import { Toaster } from './components/ui/toaster';
 import './App.css';
 
 function App() {
   return (
-    <Router>
+    <ErrorBoundary>
+      <Router>
       <Routes>
         {/* Public Routes */}
         <Route path="/login" element={<LoginPage />} />
@@ -51,6 +53,7 @@ function App() {
       {/* Toast notifications */}
       <Toaster />
     </Router>
+    </ErrorBoundary>
   );
 }
 
