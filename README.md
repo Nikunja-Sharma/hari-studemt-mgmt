@@ -401,3 +401,602 @@ student-management-system/
 └── REPORTS_DOCUMENTATION.md   # Reports guide
 ```
 
+
+## 🔌 API Documentation
+
+### Base URL
+```
+http://localhost:3000/api
+```
+
+### Authentication Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| POST | `/auth/signup` | User self-registration | Public |
+| POST | `/auth/login` | User login | Public |
+| POST | `/auth/logout` | User logout | Protected |
+| POST | `/auth/register` | Admin creates user | Admin |
+| GET | `/auth/verify` | Verify JWT token | Protected |
+
+### Student Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/students` | Get all students | Protected |
+| GET | `/students/search` | Search students | Protected |
+| GET | `/students/:id` | Get student by ID | Protected |
+| POST | `/students` | Create student | Admin/Faculty |
+| PUT | `/students/:id` | Update student | Admin |
+| DELETE | `/students/:id` | Delete student | Admin |
+
+### Department Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/departments` | Get all departments | Protected |
+| GET | `/departments/:id` | Get department by ID | Protected |
+| GET | `/departments/:id/sections` | Get sections by dept | Protected |
+| POST | `/departments` | Create department | Admin |
+| PUT | `/departments/:id` | Update department | Admin |
+| DELETE | `/departments/:id` | Delete department | Admin |
+
+### Section Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/sections` | Get all sections | Protected |
+| POST | `/sections` | Create section | Admin |
+| PUT | `/sections/:id` | Update section | Admin |
+| DELETE | `/sections/:id` | Delete section | Admin |
+
+### Report Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/reports/department` | Department report | Protected |
+| GET | `/reports/section` | Section report | Protected |
+| GET | `/reports/complete` | Complete report | Protected |
+| GET | `/reports/export/csv` | Export to CSV | Protected |
+
+### Dashboard Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/dashboard/stats` | Get statistics | Protected |
+
+### User Management Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/users` | Get all users | Admin |
+| GET | `/users/stats` | Get user stats | Admin |
+| GET | `/users/:id` | Get user by ID | Admin |
+| POST | `/users/:id/ban` | Ban user | Admin |
+| POST | `/users/:id/unban` | Unban user | Admin |
+| DELETE | `/users/:id` | Delete user | Admin |
+
+### Profile Endpoints
+
+| Method | Endpoint | Description | Access |
+|--------|----------|-------------|--------|
+| GET | `/profile` | Get user profile | Protected |
+| PUT | `/profile` | Update profile | Protected |
+| GET | `/profile/preferences` | Get preferences | Protected |
+| PUT | `/profile/preferences` | Update preferences | Protected |
+| POST | `/profile/change-password` | Change password | Protected |
+
+### Request/Response Examples
+
+**Login Request:**
+```json
+POST /api/auth/login
+{
+  "username": "admin",
+  "password": "admin123"
+}
+```
+
+**Login Response:**
+```json
+{
+  "success": true,
+  "message": "Login successful",
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "user": {
+    "id": "507f1f77bcf86cd799439011",
+    "username": "admin",
+    "email": "admin@example.com",
+    "role": "Admin"
+  }
+}
+```
+
+**Create Student Request:**
+```json
+POST /api/students
+Authorization: Bearer <token>
+{
+  "name": "John Doe",
+  "rollNumber": "CS2024001",
+  "department": "507f1f77bcf86cd799439011",
+  "section": "507f1f77bcf86cd799439012",
+  "email": "john.doe@example.com",
+  "contact": "1234567890"
+}
+```
+
+
+## 👥 User Roles
+
+### Admin
+**Full system access with all privileges:**
+
+- ✅ Manage students (Create, Read, Update, Delete)
+- ✅ Manage departments (Create, Read, Update, Delete)
+- ✅ Manage sections (Create, Read, Update, Delete)
+- ✅ Manage users (View, Ban, Unban, Delete)
+- ✅ Generate and export reports
+- ✅ View dashboard statistics
+- ✅ Access all system features
+
+### Faculty
+**Limited access for teaching staff:**
+
+- ✅ View all students
+- ✅ Create new students
+- ✅ Search and filter students
+- ✅ View departments and sections
+- ✅ Generate and export reports
+- ✅ View dashboard statistics
+- ❌ Cannot update or delete students
+- ❌ Cannot manage departments/sections
+- ❌ Cannot manage users
+
+### Default Credentials
+
+After running `createAdmin.js`:
+
+**Admin Account:**
+```
+Username: admin
+Password: admin123
+```
+
+After running `seedData.js`:
+
+**Faculty Account:**
+```
+Username: faculty
+Password: faculty123
+```
+
+⚠️ **Important:** Change default passwords immediately in production!
+
+
+## 📸 Screenshots
+
+### Login Page
+User authentication with secure login form.
+
+### Dashboard
+Role-based dashboard showing system statistics and quick actions.
+
+**Admin Dashboard:**
+- Total students, departments, sections
+- Department-wise distribution
+- Quick action buttons
+- Recent activity
+
+**Faculty Dashboard:**
+- Student statistics
+- Department overview
+- Quick access to student management
+
+### Student Management
+Comprehensive student management interface with:
+- Search and filter capabilities
+- Add/Edit/Delete operations
+- Detailed student view
+- Pagination
+
+### Department & Section Management
+Organized accordion-based interface for:
+- Department CRUD operations
+- Section management under departments
+- Capacity tracking
+- Student count per section
+
+### Reports
+Advanced reporting system with:
+- Department-wise reports
+- Section-wise reports
+- Complete system reports
+- CSV export functionality
+- Print-optimized layouts
+
+### Settings
+User profile and preferences management:
+- Profile information
+- Password change
+- Theme preferences
+- Notification settings
+
+
+## 🧪 Testing
+
+### Manual Testing
+
+1. **Start the application** (both frontend and backend)
+
+2. **Test Authentication:**
+   - Navigate to `http://localhost:5173/login`
+   - Login with admin credentials
+   - Verify dashboard loads correctly
+   - Test logout functionality
+
+3. **Test Student Management:**
+   - Add a new student
+   - Search for students
+   - Filter by department/section
+   - Edit student details
+   - Delete a student (Admin only)
+
+4. **Test Department Management:**
+   - Create a new department
+   - Add sections to department
+   - Edit department/section
+   - Delete department/section
+
+5. **Test Reports:**
+   - Generate department report
+   - Generate section report
+   - Export to CSV
+   - Test print functionality
+
+### API Testing with Postman
+
+1. Import the API collection (if available)
+2. Set environment variables:
+   - `base_url`: `http://localhost:3000/api`
+   - `token`: Your JWT token after login
+
+3. Test each endpoint:
+   - Authentication endpoints
+   - CRUD operations
+   - Report generation
+   - Error handling
+
+### Test Data
+
+Use the seed script to populate test data:
+```bash
+cd server
+node scripts/seedData.js
+```
+
+This creates:
+- 4 Departments
+- 8 Sections
+- 80 Students
+- 2 Users (Admin + Faculty)
+
+
+## 🚀 Deployment
+
+### Deploying to Vercel
+
+#### Frontend Deployment
+
+1. **Install Vercel CLI:**
+```bash
+npm install -g vercel
+```
+
+2. **Deploy Frontend:**
+```bash
+cd client
+vercel
+```
+
+3. **Set Environment Variables in Vercel:**
+   - Go to Vercel Dashboard → Your Project → Settings → Environment Variables
+   - Add: `VITE_API_URL` = Your backend URL
+
+#### Backend Deployment
+
+1. **Deploy Backend:**
+```bash
+cd server
+vercel
+```
+
+2. **Set Environment Variables in Vercel:**
+   - `MONGODB_URI` = Your MongoDB connection string
+   - `JWT_SECRET` = Your JWT secret key
+   - `CLIENT_URL` = Your frontend URL
+   - `NODE_ENV` = production
+
+### Deploying to Other Platforms
+
+#### Heroku
+
+**Backend:**
+```bash
+cd server
+heroku create your-app-name
+heroku config:set MONGODB_URI=your_mongodb_uri
+heroku config:set JWT_SECRET=your_jwt_secret
+git push heroku main
+```
+
+**Frontend:**
+```bash
+cd client
+# Build the app
+npm run build
+# Deploy the dist folder
+```
+
+#### Railway
+
+1. Connect your GitHub repository
+2. Select the server folder
+3. Add environment variables
+4. Deploy
+
+#### MongoDB Atlas
+
+1. Create a free cluster at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas)
+2. Create a database user
+3. Whitelist IP addresses (0.0.0.0/0 for all)
+4. Get connection string
+5. Update `MONGODB_URI` in your environment variables
+
+### Production Checklist
+
+- [ ] Change default admin password
+- [ ] Update JWT_SECRET to a strong random string
+- [ ] Set NODE_ENV to 'production'
+- [ ] Configure CORS for your domain
+- [ ] Set up MongoDB Atlas or production database
+- [ ] Enable HTTPS/SSL
+- [ ] Set up error logging (e.g., Sentry)
+- [ ] Configure rate limiting
+- [ ] Set up database backups
+- [ ] Test all features in production
+- [ ] Monitor application performance
+
+
+## 🔧 Troubleshooting
+
+### Common Issues
+
+#### MongoDB Connection Error
+```
+Error: connect ECONNREFUSED 127.0.0.1:27017
+```
+**Solution:**
+- Ensure MongoDB is running: `mongod` or `brew services start mongodb-community`
+- Check MongoDB URI in `.env` file
+- Verify MongoDB is installed correctly
+
+#### Port Already in Use
+```
+Error: listen EADDRINUSE: address already in use :::3000
+```
+**Solution:**
+- Kill the process using the port:
+  ```bash
+  # On macOS/Linux
+  lsof -ti:3000 | xargs kill -9
+  
+  # On Windows
+  netstat -ano | findstr :3000
+  taskkill /PID <PID> /F
+  ```
+- Or change the port in `.env` file
+
+#### CORS Error
+```
+Access to XMLHttpRequest has been blocked by CORS policy
+```
+**Solution:**
+- Verify `CLIENT_URL` in server `.env` matches your frontend URL
+- Check CORS configuration in `server/api/index.js`
+- Ensure credentials are included in API requests
+
+#### JWT Token Invalid
+```
+Error: jwt malformed or invalid token
+```
+**Solution:**
+- Clear browser localStorage
+- Login again to get a new token
+- Verify JWT_SECRET is the same in `.env`
+
+#### Module Not Found
+```
+Error: Cannot find module 'express'
+```
+**Solution:**
+- Run `npm install` in the respective directory
+- Delete `node_modules` and `package-lock.json`, then run `npm install` again
+
+### Getting Help
+
+If you encounter issues:
+
+1. Check the [Issues](https://github.com/yourusername/student-management-system/issues) page
+2. Review the documentation files:
+   - `QUICKSTART.md` - Quick start guide
+   - `PROJECT_SUMMARY.md` - Project overview
+   - `REPORTS_DOCUMENTATION.md` - Reports guide
+3. Check server logs for error messages
+4. Verify all environment variables are set correctly
+
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+### How to Contribute
+
+1. **Fork the repository**
+2. **Create a feature branch**
+   ```bash
+   git checkout -b feature/AmazingFeature
+   ```
+3. **Commit your changes**
+   ```bash
+   git commit -m 'Add some AmazingFeature'
+   ```
+4. **Push to the branch**
+   ```bash
+   git push origin feature/AmazingFeature
+   ```
+5. **Open a Pull Request**
+
+### Contribution Guidelines
+
+- Follow the existing code style
+- Write clear commit messages
+- Add comments for complex logic
+- Update documentation if needed
+- Test your changes thoroughly
+- Ensure no breaking changes
+
+### Code Style
+
+- Use ES6+ features
+- Follow React best practices
+- Use meaningful variable names
+- Keep functions small and focused
+- Add JSDoc comments for functions
+
+### Reporting Bugs
+
+If you find a bug, please create an issue with:
+- Clear description of the bug
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Screenshots (if applicable)
+- Environment details (OS, Node version, etc.)
+
+### Feature Requests
+
+For feature requests, create an issue with:
+- Clear description of the feature
+- Use case and benefits
+- Possible implementation approach
+
+
+## 📚 Additional Documentation
+
+- **[QUICKSTART.md](QUICKSTART.md)** - Quick start guide for getting up and running
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - Comprehensive project overview
+- **[REPORTS_DOCUMENTATION.md](REPORTS_DOCUMENTATION.md)** - Detailed reports system guide
+- **[PROJECT_COMPLETION_ANALYSIS.md](PROJECT_COMPLETION_ANALYSIS.md)** - Project completion status
+- **[COMPLETION_REPORT.md](COMPLETION_REPORT.md)** - Detailed completion report
+
+## 🔮 Future Enhancements
+
+Planned features for future versions:
+
+### Phase 1: Advanced Features
+- [ ] Advanced search with multiple filters
+- [ ] Bulk import/export (Excel, CSV)
+- [ ] Student photo upload
+- [ ] Email notifications
+- [ ] In-app notifications
+
+### Phase 2: Enhanced Security
+- [ ] Two-factor authentication (2FA)
+- [ ] Session management
+- [ ] Audit logging
+- [ ] Enhanced password policies
+- [ ] IP whitelisting
+
+### Phase 3: Extended Functionality
+- [ ] Attendance management system
+- [ ] Marks/grades management
+- [ ] Fee management
+- [ ] Timetable management
+- [ ] Parent portal
+- [ ] Course management
+- [ ] Assignment submission
+
+### Phase 4: Analytics & Reporting
+- [ ] Advanced analytics dashboard
+- [ ] Data visualization charts
+- [ ] Predictive analytics
+- [ ] Custom report builder
+- [ ] Automated report scheduling
+
+### Phase 5: User Experience
+- [ ] Multi-language support
+- [ ] Dark mode
+- [ ] Mobile app (React Native)
+- [ ] Progressive Web App (PWA)
+- [ ] Offline mode
+
+
+## 📄 License
+
+This project is licensed under the MIT License - see below for details:
+
+```
+MIT License
+
+Copyright (c) 2025 Student Management System
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+## 👨‍💻 Authors
+
+- **Your Name** - *Initial work* - [YourGitHub](https://github.com/yourusername)
+
+## 🙏 Acknowledgments
+
+- [React](https://reactjs.org/) - Frontend library
+- [Express.js](https://expressjs.com/) - Backend framework
+- [MongoDB](https://www.mongodb.com/) - Database
+- [shadcn/ui](https://ui.shadcn.com/) - UI components
+- [Tailwind CSS](https://tailwindcss.com/) - CSS framework
+- [Lucide](https://lucide.dev/) - Icon library
+
+## 📞 Support
+
+For support and questions:
+
+- 📧 Email: your.email@example.com
+- 🐛 Issues: [GitHub Issues](https://github.com/yourusername/student-management-system/issues)
+- 💬 Discussions: [GitHub Discussions](https://github.com/yourusername/student-management-system/discussions)
+
+## 🌟 Show Your Support
+
+If you find this project helpful, please give it a ⭐️!
+
+---
+
+**Built with ❤️ using the MERN Stack**
+
+*Last Updated: January 2025*
